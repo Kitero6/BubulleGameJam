@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CellController : MonoBehaviour
 {
+    private AudioSource _audioSource = null;
     public Sprite _healedSprite = null;
     private float _baseRotation = 0f;
 
@@ -19,9 +20,13 @@ public class CellController : MonoBehaviour
     public float Vibration { get => _vibrationStrength; set => _vibrationStrength = value; }
     public int HealNeeded { get => _healNeeded - _currHeal; }
 
+    public AudioClipSound _onHealClip = null;
+    public AudioClipSound _onFullHealClip = null;
+
     // Start is called before the first frame update
     void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
         _vibrationDir = Random.Range(0, 2) == 0 ? -1 : 1;
         _currHeal = 0;
 
@@ -44,11 +49,16 @@ public class CellController : MonoBehaviour
     public void Heal()
     {
         _currHeal++;
-
+        
         if (_currHeal >= _healNeeded)
         {
             SpriteRenderer renderer = GetComponent<SpriteRenderer>();
             renderer.sprite = _healedSprite;
+            _onFullHealClip.PlayToSource(_audioSource);
+        }
+        else
+        {
+            _onHealClip.PlayToSource(_audioSource);
         }
     }
 }
