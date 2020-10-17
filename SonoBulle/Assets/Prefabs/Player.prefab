@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7177646562786114468}
   - component: {fileID: 7177646562786114469}
   - component: {fileID: 7177646562786114520}
+  - component: {fileID: 1773353047032728469}
   - component: {fileID: 7177646562786114521}
   m_Layer: 0
   m_Name: Player
@@ -29,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7177646562786114470}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.501, y: 0.876, z: -3.3388672}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_Children:
   - {fileID: 7177646562890628750}
@@ -102,10 +103,33 @@ MonoBehaviour:
   _grabStrength: 10
   _arrowPivot: {fileID: 7177646562890628750}
   _goOnClick: {fileID: 0}
-  _arrowMinSize: 1
+  _arrowMinSize: 0.1
   _arrowMaxSize: 3
-  _onGrabAudio: {fileID: 0}
-  _onReleaseAudio: {fileID: 0}
+  _percentToTriggerSound: 0.01
+  _vibrationSpeed: 0
+  _vibrationReleaseSpeed: 0
+  _vibrationToOpenCell: 0
+  _medicGO: {fileID: 1515782281382379802, guid: bbdb24e51d5dd87438f8e0cb06b4b3c4,
+    type: 3}
+  _numMedic: 50
+  _distToKeepFromPlayer: 1
+  _randomDistFromPlayer: 0.5
+  _medicSpeed: 0.1
+  _medicRandomSpeed: 0.05
+  _medicRotSpeed: 60
+  _medicRandomRotSpeed: 30
+  _cellMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _onGrabAudio:
+    Clip: {fileID: 0}
+    Volume: 0
+  _onReleaseAudio:
+    Clip: {fileID: 0}
+    Volume: 0
+  _onCollisionAudio:
+    Clip: {fileID: 0}
+    Volume: 0
 --- !u!50 &7177646562786114469
 Rigidbody2D:
   serializedVersion: 4
@@ -143,6 +167,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 3.58
+--- !u!58 &1773353047032728469
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7177646562786114470}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 7.06
 --- !u!82 &7177646562786114521
 AudioSource:
   m_ObjectHideFlags: 0
@@ -154,7 +194,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

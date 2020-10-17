@@ -4,36 +4,105 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Properties
     private Rigidbody2D _rigidBody = null;
     private AudioSource _audioSource = null;
 
+    #region Grab
+    [Header("Grab", order=0)]
+    private bool _isGrabbing = false;
     private Vector2 _posOnClick = Vector2.zero;
-
-    [Header("Grab")]
     public float _maxGrabDistance = 0.0f; 
     public float _grabStrength = 0.0f;
     public Transform _arrowPivot = null;
     public GameObject _goOnClick = null;
     public float _arrowMinSize = 0.0f;
     public float _arrowMaxSize = 0.0f;
+    private bool _hasGrabSoundTriggered = false;
+    public float _percentToTriggerSound = 0.0f;
+    #endregion
 
-    [Header("Audios")]
-    public AudioClip _onGrabAudio = null;
-    public AudioClip _onReleaseAudio = null;
+    #region Vibration
+    [Header("Vibration", order=1)]
+    private bool _isVibrating = false;
+    private float _currVibration = 0f;
+    public float _vibrationSpeed = 0f;
+    public float _vibrationReleaseSpeed = 0f;
+    [Range(0f, 1f)] public float _vibrationToOpenCell = 0f;
+    #endregion
+
+    #region Medic
+    [Header("Medic", order=2)]
+    private List<MedicController> _medics = null;
+    public GameObject _medicGO = null;
+    public int _numMedic = 0;
+    public float _distToKeepFromPlayer = 0.0f;
+    public float _randomDistFromPlayer = 0.0f;
+    public float _medicSpeed = 0.0f;
+    public float _medicRandomSpeed = 0.0f;
+    public float _medicRotSpeed = 0.0f;
+    public float _medicRandomRotSpeed = 0.0f;
+    #endregion
+
+    #region Cells
+    private List<CellController> _cellsInRange = null;
+    public LayerMask _cellMask = 0;
+    #endregion
+
+    #region Audios
+    [Header("Audios", order=3)]
+    public AudioClipSound _onGrabAudio = null;
+    public AudioClipSound _onReleaseAudio = null;
+    public AudioClipSound _onCollisionAudio = null;
+    #endregion
+    #endregion
 
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _audioSource = GetComponent<AudioSource>();
+        _medics = new List<MedicController>();
+        _cellsInRange = new List<CellController>();
+        
+        SpawnAllMedics();
+    }
+
+    void SpawnAllMedics()
+    {
+        for (int i = 0; i <_numMedic; ++i)
+        {
+            float dist = _distToKeepFromPlayer + Random.Range(-_randomDistFromPlayer, _randomDistFromPlayer);
+            float angle = Random.Range(0f, 360f);
+
+            Quaternion q = Quaternion.Euler(0f, 0f, angle);
+            Vector3 direction = q * Vector3.right;
+            Vector3 posSpawn = transform.position + direction * dist;
+
+            GameObject go = Instantiate(_medicGO, posSpawn, Quaternion.identity);
+            MedicController medic = go.GetComponent<MedicController>();
+            if (medic)
+            {
+                medic.Player = transform;
+                medic.DistToKeepFromPlayer = dist;
+                medic.Speed = _medicSpeed + Random.Range(-_medicRandomSpeed, _medicRandomSpeed);
+                medic.CurrAngle = angle;
+                medic.RotSpeed = (_medicRotSpeed + Random.Range(-_medicRandomRotSpeed, _medicRandomRotSpeed)) * (Mathf.RoundToInt(Random.Range(0f, 1f)) == 0 ? -1f : 1f);
+            }
+        }
     }
 
     void Update()
     {
         UpdateGrab();
+        UpdateVibration();
     }
 
+    #region Grab
     void UpdateGrab()
     {
+        if (_isVibrating && !_isGrabbing)
+            return;
+
         // Left click down
         if (Input.GetMouseButton(0))
         {
@@ -62,9 +131,8 @@ public class PlayerController : MonoBehaviour
         // Activate the arrow
         _arrowPivot.gameObject.SetActive(true);
 
-        // Play Grab sound
-        _audioSource.clip = _onGrabAudio;
-        _audioSource.Play();
+        _hasGrabSoundTriggered = false;
+        _isGrabbing = true;
     }
 
     void UpdateGrabbing()
@@ -73,9 +141,10 @@ public class PlayerController : MonoBehaviour
         Vector2 direction = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - _posOnClick;
         direction = -direction;
 
+        float grabRatio = Mathf.Clamp(direction.magnitude / _maxGrabDistance, 0f, 1f);
+        
         // Set the arrow scale
         {
-            float grabRatio = Mathf.Clamp(direction.magnitude / _maxGrabDistance, 0f, 1f);
             float arrowSize = Mathf.Lerp(_arrowMinSize, _arrowMaxSize, grabRatio);
 
             Vector3 arrowScale = _arrowPivot.transform.localScale;
@@ -87,6 +156,12 @@ public class PlayerController : MonoBehaviour
         {
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             _arrowPivot.transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+
+        // If we passed the threshold to trigger the sound
+        if (!_hasGrabSoundTriggered && grabRatio > _percentToTriggerSound)
+        {
+            _onGrabAudio.PlayToSource(_audioSource);
         }
     }
 
@@ -107,7 +182,84 @@ public class PlayerController : MonoBehaviour
         _rigidBody.AddForce(force);
 
         // Play audio
-        _audioSource.clip = _onReleaseAudio;
-        _audioSource.Play();
+        _onReleaseAudio.PlayToSource(_audioSource);
+
+        _isGrabbing = false;
+    }
+    #endregion
+
+    #region Vibration
+    void UpdateVibration()
+    {
+        UpdateVibrating();
+
+        if (!_isGrabbing || _isVibrating)
+        {
+            // Right click down
+            if (Input.GetMouseButtonDown(1))
+            {
+                StartVibration();
+            }
+            else if (Input.GetMouseButtonUp(1))
+            {
+                ReleaseVibration();
+            }
+        }
+    }
+
+    void StartVibration()
+    {
+        _isVibrating = true;
+    }
+
+    void UpdateVibrating()
+    {
+        // Update the vibration
+        _currVibration += Time.deltaTime * (_isVibrating ? _vibrationSpeed : _vibrationReleaseSpeed);
+        _currVibration = Mathf.Clamp01(_currVibration);
+
+        // If we have to send the medics to the cell
+        if (_currVibration >= _vibrationToOpenCell)
+        {
+
+        }
+    }
+
+    void StartCellHeal()
+    {
+
+    }
+
+    void ReleaseVibration()
+    {
+        _isVibrating = false;
+    }
+    #endregion
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        _onCollisionAudio.PlayToSource(_audioSource);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        // Colliding with a cell
+        if (((1 << other.gameObject.layer) & _cellMask) != 0)
+        {
+            CellController cell = other.gameObject.GetComponent<CellController>();
+            if (cell) 
+                _cellsInRange.Add(cell);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        // Colliding with a cell
+        if (((1 << other.gameObject.layer) & _cellMask) != 0)
+        {
+            CellController cell = other.gameObject.GetComponent<CellController>();
+            if (cell) 
+                _cellsInRange.Remove(cell);
+        }
     }
 }
