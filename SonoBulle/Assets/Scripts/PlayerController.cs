@@ -6,7 +6,17 @@ public class PlayerController : MonoBehaviour
 {
     #region Properties
     private Rigidbody2D _rigidBody = null;
-    private AudioSource _audioSource = null;
+    private AudioSource _generalAudioSource = null;
+    private AudioSource _vibrateAudioSource = null;
+    private Animator _animator = null;
+
+    #region Health
+    private Vector3 _lastPos = Vector3.zero;
+    private float _currHealth = 0f;
+    public float _maxHealth = 0f;
+    public float _lostHealthPerMeter = 0f;
+    public float _lostHealthOnCollision = 0f;
+    #endregion
 
     #region Grab
     [Header("Grab", order=0)]
@@ -29,6 +39,8 @@ public class PlayerController : MonoBehaviour
     public float _vibrationSpeed = 0f;
     public float _vibrationReleaseSpeed = 0f;
     [Range(0f, 1f)] public float _vibrationToOpenCell = 0f;
+    public float _vibrationAnimationMinSpeed = 0f;
+    public float _vibrationAnimationMaxSpeed = 0f;
     #endregion
 
     #region Medic
@@ -56,17 +68,24 @@ public class PlayerController : MonoBehaviour
     public AudioClipSound _onShmolReleaseAudio = null;
     public AudioClipSound _onBigReleaseAudio = null;
     public AudioClipSound _onCollisionAudio = null;
+    public AudioClipSound _vibrationSound = null;
     #endregion
     #endregion
 
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _audioSource = GetComponent<AudioSource>();
-        _medics = new List<MedicController>();
+        _animator = GetComponent<Animator>();
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        _generalAudioSource = audioSources[0];
+        _vibrateAudioSource = audioSources[1];
+
+        _medics       = new List<MedicController>();
         _cellsInRange = new List<CellController>();
         _cellsHealing = new Dictionary<CellController, List<MedicController>>();
         
+        _currHealth = _maxHealth;
+
         SpawnAllMedics();
     }
 
@@ -100,6 +119,22 @@ public class PlayerController : MonoBehaviour
     {
         UpdateGrab();
         UpdateVibration();
+
+        UpdateHealthLoss();
+    }
+
+    void UpdateHealthLoss()
+    {
+        float distFromLastFrame = (transform.position - _lastPos).magnitude;
+
+        _currHealth -= distFromLastFrame * _lostHealthPerMeter;
+
+        _lastPos = transform.position;
+
+        if (_currHealth <= 0f)
+        {
+
+        }
     }
 
     #region Grab
@@ -166,7 +201,7 @@ public class PlayerController : MonoBehaviour
         // If we passed the threshold to trigger the sound
         if (!_hasGrabSoundTriggered && grabRatio > _percentTriggerGrabSound)
         {
-            _onGrabAudio.PlayToSource(_audioSource);
+            _onGrabAudio.PlayToSource(_generalAudioSource);
         }
     }
 
@@ -189,9 +224,9 @@ public class PlayerController : MonoBehaviour
         // Play audio depending on the strength
         float grabRatio = Mathf.Clamp(direction.magnitude / _maxGrabDistance, 0f, 1f);
         if (grabRatio > _percentTriggerGrabSound)
-            _onBigReleaseAudio.PlayToSource(_audioSource);
+            _onBigReleaseAudio.PlayToSource(_generalAudioSource);
         else
-            _onShmolReleaseAudio.PlayToSource(_audioSource);
+            _onShmolReleaseAudio.PlayToSource(_generalAudioSource);
 
         _isGrabbing = false;
     }
@@ -219,6 +254,7 @@ public class PlayerController : MonoBehaviour
     void StartVibration()
     {
         _isVibrating = true;
+
     }
 
     void UpdateVibrating()
@@ -226,6 +262,16 @@ public class PlayerController : MonoBehaviour
         // Update the vibration
         _currVibration += Time.deltaTime * (_isVibrating ? _vibrationSpeed : -_vibrationReleaseSpeed);
         _currVibration = Mathf.Clamp01(_currVibration);
+
+        _animator.SetFloat("vibration", _currVibration);
+        if (_currVibration > 0.1f)
+            _animator.speed = Mathf.Lerp(_vibrationAnimationMinSpeed, _vibrationAnimationMaxSpeed, _currVibration);
+        else
+            _animator.speed = 1f;
+
+
+        SetVibrationToCells();
+        PlayVibrationSounds();
 
         // If we have to send the medics to the cell
         if (_currVibration >= _vibrationToOpenCell)
@@ -235,6 +281,30 @@ public class PlayerController : MonoBehaviour
         else
         {
             StopCellHeal();
+        }
+    }
+
+    void SetVibrationToCells()
+    {
+        foreach (CellController cell in _cellsInRange)
+        {
+            cell.Vibration = _currVibration;
+        }
+    }
+
+    void PlayVibrationSounds()
+    {
+        if (!_vibrateAudioSource.isPlaying && _currVibration > 0.1f)
+        {
+            _vibrationSound.PlayToSource(_vibrateAudioSource);
+        }
+
+        else if (_vibrateAudioSource.isPlaying)
+        {
+            if (_currVibration < 0.1f)
+                _vibrateAudioSource.Stop();
+            else
+                _vibrateAudioSource.volume = _currVibration;
         }
     }
 
@@ -315,7 +385,7 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        _onCollisionAudio.PlayToSource(_audioSource);
+        _onCollisionAudio.PlayToSource(_generalAudioSource);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -336,7 +406,10 @@ public class PlayerController : MonoBehaviour
         {
             CellController cell = other.gameObject.GetComponent<CellController>();
             if (cell) 
+            {
+                cell.Vibration = 0f;
                 _cellsInRange.Remove(cell);
+            }
         }
     }
 }
