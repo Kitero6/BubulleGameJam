@@ -78,7 +78,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ecac5c88cf1cc1e48a07ff9894a24fc4, type: 3}
+  m_Sprite: {fileID: -5332182430260110407, guid: 58d8f75a431ed014b935588c359f801f,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -123,7 +124,7 @@ MonoBehaviour:
   _maxHealth: 0
   _lostHealthPerMeter: 0
   _lostHealthOnCollision: 0
-  _maxGrabDistance: 1000
+  _maxGrabDistance: 300
   _grabStrength: 10
   _arrowPivot: {fileID: 7177646562890628750}
   _goOnClick: {fileID: 0}
@@ -133,8 +134,8 @@ MonoBehaviour:
   _vibrationSpeed: 1
   _vibrationReleaseSpeed: 0.3
   _vibrationToOpenCell: 0.7
-  _vibrationAnimationMinSpeed: 0
-  _vibrationAnimationMaxSpeed: 0
+  _vibrationAnimationMinSpeed: 0.75
+  _vibrationAnimationMaxSpeed: 3
   _medicGO: {fileID: 1515782281382379802, guid: bbdb24e51d5dd87438f8e0cb06b4b3c4,
     type: 3}
   _numMedic: 20
@@ -214,7 +215,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 7.06
+  m_Radius: 10
 --- !u!82 &7177646562786114521
 AudioSource:
   m_ObjectHideFlags: 0
