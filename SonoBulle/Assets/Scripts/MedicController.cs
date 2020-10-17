@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MedicController : MonoBehaviour
 {
-    enum EMedicState
+    public enum EMedicState
     {
         Follower,
         Heal
@@ -18,12 +18,15 @@ public class MedicController : MonoBehaviour
 
     private float _speed = 0.0f;
     private float _rotSpeed = 0.0f;
+    public float _speedToHeal = 0f;
+    public LayerMask _cellMask = 0;
 
     public float DistToKeepFromPlayer { get => _distToKeepFromPlayer; set => _distToKeepFromPlayer = value; }
     public float CurrAngle { get => _currAngle; set => _currAngle = value; }
     public Transform Player { get => _player; set => _player = value; }
     public float Speed { get => _speed; set => _speed = value; }
     public float RotSpeed { get => _rotSpeed; set => _rotSpeed = value; }
+    public EMedicState State { get => _state; set => _state = value; }
 
     // Update is called once per frame
     void Update()
@@ -31,7 +34,7 @@ public class MedicController : MonoBehaviour
         switch (_state)
         {
             case EMedicState.Follower:  UpdateFollow(); break;
-            case EMedicState.Heal:      ; break;
+            case EMedicState.Heal:      UpdateHeal(); break;
         }
     }
 
@@ -47,5 +50,24 @@ public class MedicController : MonoBehaviour
 
         // Move toward the position
         transform.position = Vector3.Lerp(transform.position, positionToReach, _speed); 
+    }
+
+    void UpdateHeal()
+    {
+        transform.position = Vector3.Lerp(transform.position, _player.position, _speedToHeal); 
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        // Colliding with a cell
+        if (_state == EMedicState.Heal && ((1 << other.gameObject.layer) & _cellMask) != 0)
+        {
+            CellController cell = other.gameObject.GetComponent<CellController>();
+            if (cell) 
+            {
+                cell.Heal();
+                Destroy(gameObject);
+            }
+        }
     }
 }

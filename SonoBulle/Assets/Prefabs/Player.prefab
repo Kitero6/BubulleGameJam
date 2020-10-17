@@ -105,10 +105,10 @@ MonoBehaviour:
   _goOnClick: {fileID: 0}
   _arrowMinSize: 0.1
   _arrowMaxSize: 3
-  _percentToTriggerSound: 0.01
-  _vibrationSpeed: 0
-  _vibrationReleaseSpeed: 0
-  _vibrationToOpenCell: 0
+  _percentTriggerGrabSound: 0
+  _vibrationSpeed: 1
+  _vibrationReleaseSpeed: 0.3
+  _vibrationToOpenCell: 0.7
   _medicGO: {fileID: 1515782281382379802, guid: bbdb24e51d5dd87438f8e0cb06b4b3c4,
     type: 3}
   _numMedic: 50
@@ -120,15 +120,18 @@ MonoBehaviour:
   _medicRandomRotSpeed: 30
   _cellMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   _onGrabAudio:
-    Clip: {fileID: 0}
+    Clips: []
     Volume: 0
-  _onReleaseAudio:
-    Clip: {fileID: 0}
+  _onShmolReleaseAudio:
+    Clips: []
+    Volume: 0
+  _onBigReleaseAudio:
+    Clips: []
     Volume: 0
   _onCollisionAudio:
-    Clip: {fileID: 0}
+    Clips: []
     Volume: 0
 --- !u!50 &7177646562786114469
 Rigidbody2D:

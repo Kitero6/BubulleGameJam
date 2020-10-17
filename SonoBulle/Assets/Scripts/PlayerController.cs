@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public float _arrowMinSize = 0.0f;
     public float _arrowMaxSize = 0.0f;
     private bool _hasGrabSoundTriggered = false;
-    public float _percentToTriggerSound = 0.0f;
+    [Range(0f, 1f)] public float _percentTriggerGrabSound = 0.0f;
     #endregion
 
     #region Vibration
@@ -46,13 +46,15 @@ public class PlayerController : MonoBehaviour
 
     #region Cells
     private List<CellController> _cellsInRange = null;
+    private Dictionary<CellController, List<MedicController>> _cellsHealing = null;
     public LayerMask _cellMask = 0;
     #endregion
 
     #region Audios
     [Header("Audios", order=3)]
     public AudioClipSound _onGrabAudio = null;
-    public AudioClipSound _onReleaseAudio = null;
+    public AudioClipSound _onShmolReleaseAudio = null;
+    public AudioClipSound _onBigReleaseAudio = null;
     public AudioClipSound _onCollisionAudio = null;
     #endregion
     #endregion
@@ -63,6 +65,7 @@ public class PlayerController : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _medics = new List<MedicController>();
         _cellsInRange = new List<CellController>();
+        _cellsHealing = new Dictionary<CellController, List<MedicController>>();
         
         SpawnAllMedics();
     }
@@ -87,6 +90,8 @@ public class PlayerController : MonoBehaviour
                 medic.Speed = _medicSpeed + Random.Range(-_medicRandomSpeed, _medicRandomSpeed);
                 medic.CurrAngle = angle;
                 medic.RotSpeed = (_medicRotSpeed + Random.Range(-_medicRandomRotSpeed, _medicRandomRotSpeed)) * (Mathf.RoundToInt(Random.Range(0f, 1f)) == 0 ? -1f : 1f);
+
+                _medics.Add(medic);
             }
         }
     }
@@ -159,7 +164,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // If we passed the threshold to trigger the sound
-        if (!_hasGrabSoundTriggered && grabRatio > _percentToTriggerSound)
+        if (!_hasGrabSoundTriggered && grabRatio > _percentTriggerGrabSound)
         {
             _onGrabAudio.PlayToSource(_audioSource);
         }
@@ -181,8 +186,12 @@ public class PlayerController : MonoBehaviour
         Vector2 force = direction * _grabStrength;
         _rigidBody.AddForce(force);
 
-        // Play audio
-        _onReleaseAudio.PlayToSource(_audioSource);
+        // Play audio depending on the strength
+        float grabRatio = Mathf.Clamp(direction.magnitude / _maxGrabDistance, 0f, 1f);
+        if (grabRatio > _percentTriggerGrabSound)
+            _onBigReleaseAudio.PlayToSource(_audioSource);
+        else
+            _onShmolReleaseAudio.PlayToSource(_audioSource);
 
         _isGrabbing = false;
     }
@@ -215,19 +224,87 @@ public class PlayerController : MonoBehaviour
     void UpdateVibrating()
     {
         // Update the vibration
-        _currVibration += Time.deltaTime * (_isVibrating ? _vibrationSpeed : _vibrationReleaseSpeed);
+        _currVibration += Time.deltaTime * (_isVibrating ? _vibrationSpeed : -_vibrationReleaseSpeed);
         _currVibration = Mathf.Clamp01(_currVibration);
 
         // If we have to send the medics to the cell
         if (_currVibration >= _vibrationToOpenCell)
         {
-
+            StartCellHeal();
+        }
+        else
+        {
+            StopCellHeal();
         }
     }
 
     void StartCellHeal()
     {
+        // For all the cells in range
+        foreach (CellController cell in _cellsInRange)
+        {
+            if (!_cellsHealing.ContainsKey(cell))
+                SendHealers(cell);
+        }
+    }
 
+    void SendHealers(CellController cell)
+    {
+        // Create the array of senders
+        List<MedicController> healers = new List<MedicController>();
+
+        // Send the right amount of healers needed
+        for (int i = 0; i < cell._healNeeded; ++i)
+        {
+            if (_medics.Count == 0)
+                return;
+
+            int j = Mathf.RoundToInt(Random.Range(0, _medics.Count - 1));
+            MedicController currMedic = _medics[j];
+
+            currMedic.Player = cell.transform;
+            currMedic.State = MedicController.EMedicState.Heal;
+
+            _medics.Remove(currMedic);
+            healers.Add(currMedic);
+        }
+
+        _cellsHealing.Add(cell, healers);
+    }
+
+    void StopCellHeal()
+    {
+        foreach (List<MedicController> medics in _cellsHealing.Values)
+        {
+            foreach (MedicController medic in medics)
+            {
+                medic.Player = transform;
+                medic.State = MedicController.EMedicState.Follower;
+                
+                _medics.Add(medic);
+            }
+        }
+
+        _cellsHealing.Clear();
+    }
+
+    CellController GetClosestCell()
+    {
+        float lowestDist = Mathf.Infinity;
+        CellController closest = null;
+
+        foreach (CellController cell in _cellsInRange)
+        {
+            float dist = (transform.position - cell.transform.position).sqrMagnitude;
+
+            if (lowestDist > dist)
+            {
+                lowestDist = dist;
+                closest = cell;
+            }
+        }
+
+        return closest;
     }
 
     void ReleaseVibration()
