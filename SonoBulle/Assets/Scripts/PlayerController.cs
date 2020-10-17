@@ -324,7 +324,7 @@ public class PlayerController : MonoBehaviour
         List<MedicController> healers = new List<MedicController>();
 
         // Send the right amount of healers needed
-        for (int i = 0; i < cell._healNeeded; ++i)
+        for (int i = 0; i < cell.HealNeeded; ++i)
         {
             if (_medics.Count == 0)
                 return;

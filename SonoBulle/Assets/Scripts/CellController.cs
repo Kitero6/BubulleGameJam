@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CellController : MonoBehaviour
 {
+    public Sprite _healedSprite = null;
     private float _baseRotation = 0f;
 
     private int _currHeal = 0;
@@ -16,6 +17,7 @@ public class CellController : MonoBehaviour
     public int _healNeeded = 0;
 
     public float Vibration { get => _vibrationStrength; set => _vibrationStrength = value; }
+    public int HealNeeded { get => _healNeeded - _currHeal; }
 
     // Start is called before the first frame update
     void Start()
@@ -45,7 +47,8 @@ public class CellController : MonoBehaviour
 
         if (_currHeal >= _healNeeded)
         {
-            Destroy(gameObject);
+            SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+            renderer.sprite = _healedSprite;
         }
     }
 }

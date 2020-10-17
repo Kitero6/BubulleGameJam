@@ -120,6 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd3936a1430090242927e84810112a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxHealth: 0
+  _lostHealthPerMeter: 0
+  _lostHealthOnCollision: 0
   _maxGrabDistance: 1000
   _grabStrength: 10
   _arrowPivot: {fileID: 7177646562890628750}
@@ -130,9 +133,11 @@ MonoBehaviour:
   _vibrationSpeed: 1
   _vibrationReleaseSpeed: 0.3
   _vibrationToOpenCell: 0.7
+  _vibrationAnimationMinSpeed: 0
+  _vibrationAnimationMaxSpeed: 0
   _medicGO: {fileID: 1515782281382379802, guid: bbdb24e51d5dd87438f8e0cb06b4b3c4,
     type: 3}
-  _numMedic: 50
+  _numMedic: 20
   _distToKeepFromPlayer: 1
   _randomDistFromPlayer: 0.5
   _medicSpeed: 0.1
@@ -152,6 +157,9 @@ MonoBehaviour:
     Clips: []
     Volume: 0
   _onCollisionAudio:
+    Clips: []
+    Volume: 0
+  _vibrationSound:
     Clips: []
     Volume: 0
 --- !u!50 &7177646562786114469
