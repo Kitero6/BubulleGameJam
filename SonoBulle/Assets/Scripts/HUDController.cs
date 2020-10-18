@@ -17,7 +17,5 @@ public class HUDController : MonoBehaviour
     void Update()
     {
         _healthBar.value = _player.CurrHealth / _player._maxHealth;
-
-        Debug.Log(_player.CurrHealth + " " + _player._maxHealth + " " + _player.CurrHealth / _player._maxHealth);
     }
 }

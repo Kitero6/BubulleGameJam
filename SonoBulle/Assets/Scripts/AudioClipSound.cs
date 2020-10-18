@@ -18,5 +18,7 @@ public class AudioClipSound
         
         audioSource.clip = Clips[idx];
         audioSource.volume = Volume;
+
+        audioSource.Play();
     }
 }
