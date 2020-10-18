@@ -542,7 +542,7 @@ MonoBehaviour:
   _image: {fileID: 28808946}
   _play: {fileID: 221684537}
   _quit: {fileID: 937383776}
-  _playScene: SampleScene
+  _playScene: Level1
   _fadeSpeed: 0.025
 --- !u!114 &1469976148
 MonoBehaviour:
