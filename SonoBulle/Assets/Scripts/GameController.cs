@@ -91,6 +91,8 @@ public class GameController : MonoBehaviour
             yield return 0;
         }
 
+        yield return new WaitForSeconds(0.5f);
+
         GlobalValues.LastScene = SceneManager.GetActiveScene().name;
         if (_state == EGameState.Won)
         {

@@ -16,7 +16,9 @@ public class PlayerController : MonoBehaviour
     private float _currHealth = 0f;
     public float _maxHealth = 0f;
     public float _lostHealthPerMeter = 0f;
+    public float _lostHealthPerSecOnHighVibration = 0f;
     public float _lostHealthOnCollision = 0f;
+    [Range(0f, 1f)] public float _percentVibrationToTakeDamage = 0f;
     
     public float CurrHealth { get => _currHealth; }
     public bool IsDead { get => _currHealth < 0f; }
@@ -215,6 +217,7 @@ public class PlayerController : MonoBehaviour
         if (!_hasGrabSoundTriggered && grabRatio > _percentTriggerGrabSound)
         {
             _onGrabAudio.PlayToSource(_generalAudioSource);
+            _hasGrabSoundTriggered = true;
         }
     }
 
@@ -282,6 +285,8 @@ public class PlayerController : MonoBehaviour
         else
             _animator.speed = 1f;
 
+        if (_currVibration >= _percentVibrationToTakeDamage)
+            _currHealth -= _lostHealthPerSecOnHighVibration * Time.deltaTime;
 
         SetVibrationToCells();
         PlayVibrationSounds();
