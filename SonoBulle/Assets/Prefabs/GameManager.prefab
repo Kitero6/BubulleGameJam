@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
-  _fadeSpeed: 0.05
+  _fadeSpeed: 0.0025
+  _winScene: Level2
   _gameOverScene: 
   _winSound:
     Clips: []

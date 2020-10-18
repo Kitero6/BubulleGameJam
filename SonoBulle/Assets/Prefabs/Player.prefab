@@ -121,9 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd3936a1430090242927e84810112a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 0
-  _lostHealthPerMeter: 0
-  _lostHealthOnCollision: 0
+  _maxHealth: 100
+  _lostHealthPerMeter: 2
+  _lostHealthOnCollision: 2
   _maxGrabDistance: 300
   _grabStrength: 10
   _arrowPivot: {fileID: 7177646562890628750}
