@@ -465,7 +465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 259046309}
   _nextScene: MainMenu
-  _fadeSpeed: 0.025
+  _fadeSpeed: 0.5
 --- !u!1 &1871053990
 GameObject:
   m_ObjectHideFlags: 0

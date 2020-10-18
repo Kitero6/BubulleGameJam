@@ -32,7 +32,7 @@ public class WinMenu : MonoBehaviour
         while (_image.color.a > 0f)
         {
             Color newCol = _image.color;
-            newCol.a -= _fadeSpeed;
+            newCol.a -= _fadeSpeed * Time.deltaTime;
             _image.color = newCol;
 
             yield return 0;
@@ -46,7 +46,7 @@ public class WinMenu : MonoBehaviour
         while (_image.color.a < 1f)
         {
             Color newCol = _image.color;
-            newCol.a += _fadeSpeed;
+            newCol.a += _fadeSpeed * Time.deltaTime;
             _image.color = newCol;
             yield return 0;
         }
