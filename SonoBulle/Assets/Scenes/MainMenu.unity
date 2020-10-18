@@ -543,7 +543,7 @@ MonoBehaviour:
   _play: {fileID: 221684537}
   _quit: {fileID: 937383776}
   _playScene: Level1
-  _fadeSpeed: 0.025
+  _fadeSpeed: 0.5
 --- !u!114 &1469976148
 MonoBehaviour:
   m_ObjectHideFlags: 0

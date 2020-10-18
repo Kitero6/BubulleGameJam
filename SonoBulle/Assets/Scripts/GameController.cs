@@ -35,6 +35,8 @@ public class GameController : MonoBehaviour
         _cells = new List<CellController>();
         _cells.AddRange(FindObjectsOfType<CellController>());
 
+        _player._canMove = false;
+
         StartCoroutine("StartScene");
     }
 
@@ -74,11 +76,13 @@ public class GameController : MonoBehaviour
         while (_image.color.a > 0f)
         {
             Color newCol = _image.color;
-            newCol.a -= _fadeSpeed;
+            newCol.a -= _fadeSpeed * Time.deltaTime;
             _image.color = newCol;
 
             yield return 0;
         }
+
+        _player._canMove = true;
     }
 
     IEnumerator StartEndScene()
@@ -86,7 +90,7 @@ public class GameController : MonoBehaviour
         while (_image.color.a < 1f)
         {
             Color newCol = _image.color;
-            newCol.a += _fadeSpeed;
+            newCol.a += _fadeSpeed * Time.deltaTime;
             _image.color = newCol;
             yield return 0;
         }

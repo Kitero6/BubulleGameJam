@@ -79,6 +79,8 @@ public class PlayerController : MonoBehaviour
     #endregion
     #endregion
 
+    public bool _canMove = false;
+
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
@@ -127,20 +129,22 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!IsDead)
+        if (_canMove)
         {
-            UpdateGrab();
-            UpdateVibration();
+            if (!IsDead)
+            {
+                UpdateGrab();
+                UpdateVibration();
 
-            UpdateHealthLoss();
+                UpdateHealthLoss();
+            }
+            else if (!_playedDeathSound)
+            {
+                _playedDeathSound = true;
+
+                _deathSound.PlayToSource(_generalAudioSource);
+            }
         }
-        else if (!_playedDeathSound)
-        {
-            _playedDeathSound = true;
-
-            _deathSound.PlayToSource(_generalAudioSource);
-        }
-
     }
 
     void UpdateHealthLoss()
