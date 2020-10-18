@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 6274509837421507490}
   - component: {fileID: 6274509837421507491}
   - component: {fileID: 6274509837421507488}
-  - component: {fileID: 6274509837421507489}
   - component: {fileID: 6274509837421507493}
   - component: {fileID: 7387226921457896897}
+  - component: {fileID: 2061506087}
   m_Layer: 8
   m_Name: Cell
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 6274509837421507502}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.92, y: 0.17, z: -7.4746094}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalScale: {x: 0.16542783, y: 0.16542783, z: 0.8271392}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4cc7070725525e741804362e322fb484, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f832c8dc34219314d99b882b636bb655, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,22 +101,12 @@ MonoBehaviour:
   _vibrationAngle: 3
   _vibrationMaxSpeed: 180
   _healNeeded: 3
---- !u!58 &6274509837421507489
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6274509837421507502}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 3.58
+  _onHealClip:
+    Clips: []
+    Volume: 0
+  _onFullHealClip:
+    Clips: []
+    Volume: 0
 --- !u!50 &6274509837421507493
 Rigidbody2D:
   serializedVersion: 4
@@ -234,3 +224,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!70 &2061506087
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274509837421507502}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.022907896}
+  m_Size: {x: 4.1355004, y: 6.5243974}
+  m_Direction: 0

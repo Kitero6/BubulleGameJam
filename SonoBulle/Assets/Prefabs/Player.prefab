@@ -78,12 +78,13 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ecac5c88cf1cc1e48a07ff9894a24fc4, type: 3}
+  m_Sprite: {fileID: -5332182430260110407, guid: 58d8f75a431ed014b935588c359f801f,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 7.16, y: 7.16}
+  m_Size: {x: 7.2799997, y: 7.2906637}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -123,7 +124,7 @@ MonoBehaviour:
   _maxHealth: 0
   _lostHealthPerMeter: 0
   _lostHealthOnCollision: 0
-  _maxGrabDistance: 1000
+  _maxGrabDistance: 300
   _grabStrength: 10
   _arrowPivot: {fileID: 7177646562890628750}
   _goOnClick: {fileID: 0}
@@ -133,8 +134,8 @@ MonoBehaviour:
   _vibrationSpeed: 1
   _vibrationReleaseSpeed: 0.3
   _vibrationToOpenCell: 0.7
-  _vibrationAnimationMinSpeed: 0
-  _vibrationAnimationMaxSpeed: 0
+  _vibrationAnimationMinSpeed: 0.75
+  _vibrationAnimationMaxSpeed: 3
   _medicGO: {fileID: 1515782281382379802, guid: bbdb24e51d5dd87438f8e0cb06b4b3c4,
     type: 3}
   _numMedic: 20
@@ -186,15 +187,15 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 10
+  m_Mass: 1.5
+  m_LinearDrag: 5
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 677e16f65cd978d4c9812b9b7aa1b5bb, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &7177646562786114520
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -224,9 +225,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.0071001053, y: 0}
   serializedVersion: 2
-  m_Radius: 7.06
+  m_Radius: 12.355003
 --- !u!82 &7177646562786114521
 AudioSource:
   m_ObjectHideFlags: 0
