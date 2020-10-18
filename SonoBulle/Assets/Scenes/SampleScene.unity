@@ -458,7 +458,7 @@ PrefabInstance:
     - target: {fileID: 4249971446336302610, guid: 325a4b0d7dad03d4f886a513f91b00f7,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 325a4b0d7dad03d4f886a513f91b00f7, type: 3}
@@ -648,6 +648,11 @@ PrefabInstance:
       propertyPath: _lostHealthPerMeter
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7177646562786114468, guid: 924661badf3440b44bcc1f1d365ffb65,
+        type: 3}
+      propertyPath: _lostHealthOnCollision
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7177646562786114469, guid: 924661badf3440b44bcc1f1d365ffb65,
         type: 3}
       propertyPath: m_Constraints
@@ -748,6 +753,11 @@ PrefabInstance:
       propertyPath: _image
       value: 
       objectReference: {fileID: 705095796}
+    - target: {fileID: 8038969833219391526, guid: 3d99ebc232b97354caf6c134a86c00d5,
+        type: 3}
+      propertyPath: _winScene
+      value: WinMenu
+      objectReference: {fileID: 0}
     - target: {fileID: 8038969833219391527, guid: 3d99ebc232b97354caf6c134a86c00d5,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 58d8f75a431ed014b935588c359f801f
+guid: d63f36a811ddc094e9bfdebfb7fe48dc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5332182430260110407
-    second: BulleIdle_0
+      213: 8023548145188794149
+    second: Spritesheet_IDLE_0
   - first:
-      213: 670663100203035909
-    second: BulleIdle_1
+      213: 3426142792049054586
+    second: Spritesheet_IDLE_1
   - first:
-      213: -4897675384515172106
-    second: BulleIdle_2
+      213: 6000859719473164923
+    second: Spritesheet_IDLE_2
   - first:
-      213: -263081301586209509
-    second: BulleIdle_3
+      213: 2491310820211379853
+    second: Spritesheet_IDLE_3
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BulleIdle_0
+      name: Spritesheet_IDLE_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9bb54cea4584006b0800000000000000
-      internalID: -5332182430260110407
+      spriteID: 52fe838078e595f60800000000000000
+      internalID: 8023548145188794149
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulleIdle_1
+      name: Spritesheet_IDLE_1
       rect:
         serializedVersion: 2
         x: 728
@@ -145,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 50d609b498cae4900800000000000000
-      internalID: 670663100203035909
+      spriteID: a7359d587ba1c8f20800000000000000
+      internalID: 3426142792049054586
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulleIdle_2
+      name: Spritesheet_IDLE_2
       rect:
         serializedVersion: 2
         x: 1456
@@ -166,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f86cc0df26f70cb0800000000000000
-      internalID: -4897675384515172106
+      spriteID: b72f526fe16574350800000000000000
+      internalID: 6000859719473164923
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulleIdle_3
+      name: Spritesheet_IDLE_3
       rect:
         serializedVersion: 2
         x: 2184
@@ -187,8 +187,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b1518e733f8595cf0800000000000000
-      internalID: -263081301586209509
+      spriteID: d8e49cfcdf9e29220800000000000000
+      internalID: 2491310820211379853
       vertices: []
       indices: 
       edges: []

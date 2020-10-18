@@ -46,7 +46,7 @@ MonoBehaviour:
   _image: {fileID: 0}
   _fadeSpeed: 0.0025
   _winScene: Level2
-  _gameOverScene: 
+  _gameOverScene: GameOverMenu
   _winSound:
     Clips: []
     Volume: 0
