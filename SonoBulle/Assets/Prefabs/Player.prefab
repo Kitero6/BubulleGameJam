@@ -159,21 +159,21 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 9fd845c655b4de647ac8f43d9cdf5c73, type: 3}
     - {fileID: 8300000, guid: 65f25d0d58c76ed45a3bf76a4b01219f, type: 3}
     - {fileID: 8300000, guid: abcc8a3a3e1ac81439da3106ede1df4b, type: 3}
-    Volume: 1
+    Volume: 0.787
   _onBigReleaseAudio:
     Clips:
     - {fileID: 8300000, guid: 2c65466999f0c444ebf9046c079c1cc7, type: 3}
     - {fileID: 8300000, guid: a1d1c2c577a825f4a8a36e29eddc7f93, type: 3}
     - {fileID: 8300000, guid: af47c763f967efc41b5707be4dd88040, type: 3}
-    Volume: 1
+    Volume: 0.769
   _onCollisionAudio:
     Clips:
     - {fileID: 8300000, guid: a8106522eda0a834192424cb3ee219c8, type: 3}
-    Volume: 1
+    Volume: 0.787
   _vibrationSound:
     Clips:
     - {fileID: 8300000, guid: 0bc1bfd50db56fa4fa7b4625163086e3, type: 3}
-    Volume: 1
+    Volume: 0.889
   _deathSound:
     Clips:
     - {fileID: 8300000, guid: 0229d59a4d8813546815fb929b7c7821, type: 3}
