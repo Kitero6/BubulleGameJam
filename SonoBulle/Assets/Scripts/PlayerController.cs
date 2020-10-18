@@ -12,10 +12,14 @@ public class PlayerController : MonoBehaviour
 
     #region Health
     private Vector3 _lastPos = Vector3.zero;
+    private bool _playedDeathSound = false;
     private float _currHealth = 0f;
     public float _maxHealth = 0f;
     public float _lostHealthPerMeter = 0f;
     public float _lostHealthOnCollision = 0f;
+    
+    public float CurrHealth { get => _currHealth; }
+    public bool IsDead { get => _currHealth < 0f; }
     #endregion
 
     #region Grab
@@ -69,6 +73,7 @@ public class PlayerController : MonoBehaviour
     public AudioClipSound _onBigReleaseAudio = null;
     public AudioClipSound _onCollisionAudio = null;
     public AudioClipSound _vibrationSound = null;
+    public AudioClipSound _deathSound = null;
     #endregion
     #endregion
 
@@ -84,7 +89,10 @@ public class PlayerController : MonoBehaviour
         _cellsInRange = new List<CellController>();
         _cellsHealing = new Dictionary<CellController, List<MedicController>>();
         
+        _lastPos = transform.position;
         _currHealth = _maxHealth;
+
+        _playedDeathSound = false;
 
         SpawnAllMedics();
     }
@@ -117,10 +125,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        UpdateGrab();
-        UpdateVibration();
+        if (!IsDead)
+        {
+            UpdateGrab();
+            UpdateVibration();
 
-        UpdateHealthLoss();
+            UpdateHealthLoss();
+        }
+        else if (!_playedDeathSound)
+        {
+            _playedDeathSound = true;
+
+            _deathSound.PlayToSource(_generalAudioSource);
+        }
+
     }
 
     void UpdateHealthLoss()
@@ -130,11 +148,6 @@ public class PlayerController : MonoBehaviour
         _currHealth -= distFromLastFrame * _lostHealthPerMeter;
 
         _lastPos = transform.position;
-
-        if (_currHealth <= 0f)
-        {
-
-        }
     }
 
     #region Grab
@@ -385,7 +398,12 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        _onCollisionAudio.PlayToSource(_generalAudioSource);
+        if (!IsDead)
+        {
+            _onCollisionAudio.PlayToSource(_generalAudioSource);
+
+            _currHealth -= _lostHealthOnCollision;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
