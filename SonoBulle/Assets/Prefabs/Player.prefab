@@ -121,18 +121,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd3936a1430090242927e84810112a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
+  _maxHealth: 175
   _lostHealthPerMeter: 2
-  _lostHealthPerSecOnHighVibration: 0
-  _lostHealthOnCollision: 2
-  _percentVibrationToTakeDamage: 0
+  _lostHealthPerSecOnHighVibration: 2
+  _lostHealthOnCollision: 1
+  _percentVibrationToTakeDamage: 0.35
   _maxGrabDistance: 300
   _grabStrength: 10
   _arrowPivot: {fileID: 7177646562890628750}
   _goOnClick: {fileID: 0}
   _arrowMinSize: 0.1
   _arrowMaxSize: 3
-  _percentTriggerGrabSound: 0
+  _percentTriggerGrabSound: 0.5
   _vibrationSpeed: 1
   _vibrationReleaseSpeed: 0.3
   _vibrationToOpenCell: 0.7

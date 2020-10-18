@@ -100,7 +100,7 @@ MonoBehaviour:
   _healedSprite: {fileID: 21300000, guid: 4f0e45423f9152641a43383ad05053c4, type: 3}
   _vibrationAngle: 3
   _vibrationMaxSpeed: 180
-  _healNeeded: 3
+  _healNeeded: 2
   _onHealClip:
     Clips: []
     Volume: 1
