@@ -103,10 +103,11 @@ MonoBehaviour:
   _healNeeded: 3
   _onHealClip:
     Clips: []
-    Volume: 0
+    Volume: 1
   _onFullHealClip:
-    Clips: []
-    Volume: 0
+    Clips:
+    - {fileID: 8300000, guid: 1cfde18a5e327d4458387a4d503c32d5, type: 3}
+    Volume: 1
 --- !u!50 &6274509837421507493
 Rigidbody2D:
   serializedVersion: 4
